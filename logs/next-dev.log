@@ -1,0 +1,19 @@
+
+> collectify@0.1.0 dev
+> next dev
+
+⚠ Port 3000 is in use by process 1186, using available port 3001 instead.
+▲ Next.js 16.2.0 (Turbopack)
+- Local:         http://localhost:3001
+- Network:       http://100.86.251.72:3001
+✓ Ready in 450ms
+⨯ Another next dev server is already running.
+
+- Local:        http://localhost:3000
+- PID:          1186
+- Dir:          /Users/bytedance/Downloads/b_bpKmUseyhZG-1775033601883
+- Log:          .next/dev/logs/next-development.log
+
+Run kill 1186 t[?25h
+it.
+[?25h
