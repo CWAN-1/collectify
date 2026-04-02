@@ -1,16 +1,34 @@
-import { readFileSync, statSync } from 'fs';
+import { readFileSync, statSync, existsSync } from 'fs';
 import { join } from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 
 export async function GET(request: NextRequest, { params }: { params: { name: string } }) {
   try {
     const { name } = params;
-    const filePath = join(process.cwd(), 'public', name);
+    const publicDir = join(process.cwd(), 'public');
+    const filePath = join(publicDir, name);
+    
+    // Check if public directory exists
+    if (!existsSync(publicDir)) {
+      return NextResponse.json({ error: 'Public directory not found', path: publicDir }, { status: 404 });
+    }
     
     // Check if file exists
+    if (!existsSync(filePath)) {
+      // List files in public directory for debugging
+      const fs = require('fs');
+      const files = fs.readdirSync(publicDir).filter((file: string) => file.includes('icon'));
+      return NextResponse.json({ 
+        error: 'File not found', 
+        path: filePath, 
+        availableFiles: files 
+      }, { status: 404 });
+    }
+    
+    // Check if it's a file
     const stats = statSync(filePath);
     if (!stats.isFile()) {
-      return NextResponse.json({ error: 'File not found' }, { status: 404 });
+      return NextResponse.json({ error: 'Not a file' }, { status: 404 });
     }
     
     // Read file content
@@ -33,7 +51,10 @@ export async function GET(request: NextRequest, { params }: { params: { name: st
         'Content-Length': stats.size.toString(),
       },
     });
-  } catch (error) {
-    return NextResponse.json({ error: 'File not found' }, { status: 404 });
+  } catch (error: any) {
+    return NextResponse.json({ 
+      error: 'Error reading file', 
+      message: error.message 
+    }, { status: 500 });
   }
 }
