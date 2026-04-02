@@ -2,14 +2,18 @@ import { readFileSync, statSync, existsSync } from 'fs';
 import { join } from 'path';
 import { NextRequest, NextResponse } from 'next/server';
 
-export async function GET(request: NextRequest, { params }: { params: { name: string } }) {
+export async function GET(request: NextRequest, context: any) {
   try {
-    const { name } = params;
+    // Get name from context.params
+    const name = context.params?.name;
     
     // Check if name is provided
     if (!name) {
-      return NextResponse.json({ error: 'Missing file name' }, { status: 400 });
+      return NextResponse.json({ error: 'Missing file name', context: context.params }, { status: 400 });
     }
+    
+    // Log for debugging
+    console.log('Request for file:', name);
     
     const publicDir = join(process.cwd(), 'public');
     const filePath = join(publicDir, name);
