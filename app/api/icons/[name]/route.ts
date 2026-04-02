@@ -5,6 +5,12 @@ import { NextRequest, NextResponse } from 'next/server';
 export async function GET(request: NextRequest, { params }: { params: { name: string } }) {
   try {
     const { name } = params;
+    
+    // Check if name is provided
+    if (!name) {
+      return NextResponse.json({ error: 'Missing file name' }, { status: 400 });
+    }
+    
     const publicDir = join(process.cwd(), 'public');
     const filePath = join(publicDir, name);
     
