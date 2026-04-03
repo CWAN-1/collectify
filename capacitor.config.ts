@@ -6,7 +6,7 @@ const config: CapacitorConfig = {
   webDir: 'public',
   server: {
     androidScheme: 'https',
-    url: 'https://collectify-silk.vercel.app',
+    url: 'https://v0-co-l-le-c-ti-f-y.vercel.app',
     cleartext: false
   }
 };
